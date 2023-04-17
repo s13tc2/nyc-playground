@@ -76,6 +76,10 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "sde_ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
+  
+  root_block_device {
+    volume_size = 16
+  }
 
   key_name        = aws_key_pair.generated_key.key_name
   security_groups = [aws_security_group.sde_security_group.name]
