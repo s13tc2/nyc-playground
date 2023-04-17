@@ -1,0 +1,12 @@
+setup.py
+src/nyctransport/__init__.py
+src/nyctransport.egg-info/PKG-INFO
+src/nyctransport.egg-info/SOURCES.txt
+src/nyctransport.egg-info/dependency_links.txt
+src/nyctransport.egg-info/requires.txt
+src/nyctransport.egg-info/top_level.txt
+src/nyctransport/hooks/__init__.py
+src/nyctransport/hooks/minio_hook.py
+src/nyctransport/operators/__init__.py
+src/nyctransport/operators/pandas_operator.py
+src/nyctransport/operators/s3_to_postgres.py
