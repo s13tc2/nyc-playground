@@ -3,6 +3,11 @@ output "aws_region" {
   value       = var.aws_region
 }
 
+output "bucket_name" {
+  description = "S3 bucket name."
+  value       = aws_s3_bucket.sde-data-lake.id
+}
+
 output "ec2_public_dns" {
   description = "EC2 public dns."
   value       = aws_instance.sde_ec2.public_dns

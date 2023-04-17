@@ -5,6 +5,13 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+## AWS S3 bucket details
+variable "bucket_prefix" {
+  description = "Bucket prefix for our datalake"
+  type        = string
+  default     = "sde-data-lake-"
+}
+
 ## Key to allow connection to our EC2 instance
 variable "key_name" {
   description = "EC2 key name"

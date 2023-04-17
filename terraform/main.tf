@@ -14,6 +14,41 @@ provider "aws" {
   profile = "default"
 }
 
+# Create our S3 bucket (Datalake)
+resource "aws_s3_bucket" "sde-data-lake" {
+  bucket_prefix = var.bucket_prefix
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_acl" "sde-data-lake-acl" {
+  bucket = aws_s3_bucket.sde-data-lake.id
+  acl    = "public-read-write"
+}
+
+# IAM role for EC2 to connect to AWS Redshift, S3, & EMR
+resource "aws_iam_role" "sde_ec2_iam_role" {
+  name = "sde_ec2_iam_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  managed_policy_arns = ["arn:aws:iam::aws:policy/AmazonS3FullAccess", "arn:aws:iam::aws:policy/AmazonEMRFullAccessPolicy_v2", "arn:aws:iam::aws:policy/AmazonRedshiftAllCommandsFullAccess"]
+}
+
+resource "aws_iam_instance_profile" "sde_ec2_iam_role_instance_profile" {
+  name = "sde_ec2_iam_role_instance_profile"
+  role = aws_iam_role.sde_ec2_iam_role.name
+}
+
 # Create security group for access to EC2 from your Anywhere
 resource "aws_security_group" "sde_security_group" {
   name        = "sde_security_group"
@@ -76,7 +111,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "sde_ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
-  
+
   root_block_device {
     volume_size = 16
   }
