@@ -30,5 +30,5 @@ variable "alert_email_id" {
 variable "repo_url" {
   description = "Repository url to clone into production machine"
   type        = string
-  default     = "https://github.com/s13tc2/nyc-neighborhood-transportation.git"
+  default     = "https://github.com/s13tc2/nyc-playground.git"
 }
